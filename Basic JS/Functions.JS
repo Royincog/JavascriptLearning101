@@ -4,3 +4,6 @@ function addTheNumbertoHundred(){
     for(;;){}
 }
 //function expression
+var addNumbertoHundredFunctionExpression = function(){
+
+}
