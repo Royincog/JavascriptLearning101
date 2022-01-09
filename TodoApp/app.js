@@ -13,8 +13,13 @@ let todoController = (
 
     return {
         addItem : function(des){
-         //Create a new Id   
-         ID = 0;//todoArrayObject.todoArray[todoArrayObject.todoArray.length - 1].id + 1;   
+         //Create a new Id 
+         if(todoArrayObject.todoArray.length > 0){  
+         ID = todoArrayObject.todoArray[todoArrayObject.todoArray.length - 1].id + 1;   
+         }
+         else{
+             ID = 0;
+         }
          //Create new Item
          let todoItem = new TodoObject(ID,des);
          todoArrayObject.todoArray.push(todoItem);
@@ -32,11 +37,13 @@ let todoController = (
 
 //UI controller
 let todointerfacecontroller = (function(){
+ 
     
     //function to get input 
     var domStrings = {
         todoInput : '#todoinput',
-        submitButton : '#todoSubmit'
+        submitButton : '#todoSubmit',
+        todocontainer : '#todocontainer'
     }
    
     return {
@@ -45,7 +52,22 @@ let todointerfacecontroller = (function(){
         var inputValue = document.querySelector(domStrings['todoInput']).value
             return {inputValue : inputValue};    
         },
-        getDomStrings : () => { return domStrings }
+        getDomStrings : () => { return domStrings },
+        addListItem: function(object){
+            let html,newHtml;
+
+            html =  '<div class="row"><table class="u-full-width"><thead><tr><th>Todos</th></tr></thead><tbody><tr><td id = "todo-%id%">%description%</td></tr></tbody></div>';
+
+            newHtml = html.replace('%id%',object.id);
+            newHtml = newHtml.replace('%description%',object.descriptions);
+            if(object.id == 0){
+            document.querySelector(domStrings['todocontainer']).insertAdjacentHTML('beforeend',newHtml);
+            }
+            else{
+               let tableHtml = newHtml.split('<tbody>')[1].split('</tbody>')[0];
+                document.querySelector(domStrings['todocontainer']).insertAdjacentHTML('beforeend',tableHtml);
+            }
+        }
 
     }
 
@@ -75,6 +97,7 @@ let cntrlAddItem = function (){
 
     let newItem = todoCntrl.addItem(todoInterfaceCntrl.getinput().inputValue);
     //3. Add new item to todoInterfaceCntrl to UI
+    todoInterfaceCntrl.addListItem(newItem);
     //4. Also Delete the Todo
     console.log(newItem);
     console.log(todoCntrl.getItemList());
