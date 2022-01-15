@@ -52,7 +52,7 @@ let todointerfacecontroller = (function(){
         var inputValue = document.querySelector(domStrings['todoInput']).value
             return {inputValue : inputValue};    
         },
-        getDomStrings : () => { return domStrings },
+        getDomStrings : () =>  domStrings ,
         addListItem: function(object){
             let html,newHtml;
 
